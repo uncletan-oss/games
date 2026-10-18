@@ -1,0 +1,50 @@
+name: Build Mahjong
+
+# GitHub Pages menyajikan isi branch apa adanya ("Deploy from a branch"),
+# jadi hasil build (folder /mahjong) ikut disimpan di repo.
+# Workflow ini mem-build ulang apps/mahjong dan meng-commit /mahjong bila hasilnya berbeda,
+# misalnya setelah kode diedit langsung lewat web GitHub.
+on:
+  push:
+    paths:
+      - 'apps/mahjong/**'
+      - '.github/workflows/build.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/mahjong/package-lock.json
+      - name: Build
+        working-directory: apps/mahjong
+        env:
+          VITE_PEER_HOST: ${{ vars.VITE_PEER_HOST }}
+          VITE_PEER_PORT: ${{ vars.VITE_PEER_PORT }}
+          VITE_PEER_PATH: ${{ vars.VITE_PEER_PATH }}
+        run: |
+          npm ci
+          npm run build
+      - name: Commit hasil build bila berubah
+        run: |
+          if [ -n "$(git status --porcelain mahjong)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add mahjong
+            git commit -m "Build ulang /mahjong dari apps/mahjong"
+            git push
+          else
+            echo "Hasil build sudah sesuai."
+          fi

@@ -102,8 +102,18 @@ function layaniTamu(c) {
   });
 }
 
-/** Mendaftarkan ID peer meja. ID mungkin masih "dipegang" sesaat setelah refresh, jadi dicoba ulang. */
-async function bukaMeja(kode) {
+/** Selain host, semua kursi BOT: meja tetap bisa dimainkan tanpa internet. */
+function semuaBot(view) {
+  return view.seats.every((x, i) => i === view.me || x.bot);
+}
+
+/**
+ * Mendaftarkan ID peer meja. ID mungkin masih "dipegang" sesaat setelah refresh, jadi dicoba ulang.
+ * bolehOffline: bila jaringan tidak tersedia, meja tetap dibuka hanya di perangkat ini.
+ */
+async function bukaMeja(kode, bolehOffline) {
+  const offline = () => { peran = 'host'; kodeAktif = kode; };
+  if (bolehOffline && navigator.onLine === false) return offline();
   for (let coba = 0; ; coba++) {
     const p = new Peer(idMeja(kode), opsiPeer());
     try {
@@ -122,6 +132,7 @@ async function bukaMeja(kode) {
         if (coba < 4) { await new Promise(r => setTimeout(r, 2500)); continue; }
         throw galat('KAMAR_DIPAKAI');
       }
+      if (bolehOffline) return offline();
       throw galat('JARINGAN_GAGAL');
     }
   }
@@ -197,7 +208,7 @@ export async function panggil(fn, ...args) {
     putuskan();
     const kode = mesin.normalKode_(args[0]);
     const hasil = salinJson(mesin.buatKamar(kode, ...args.slice(1)));
-    try { await bukaMeja(kode); }
+    try { await bukaMeja(kode, semuaBot(hasil.view)); }
     catch (e) { mesin.hapusKamar_(kode); throw e; }
     return hasil;
   }
@@ -206,7 +217,10 @@ export async function panggil(fn, ...args) {
     const kode = mesin.normalKode_(args[0]);
     // Meja ini milik perangkat ini (host me-refresh halaman): buka lagi mejanya
     if (mesin.adalahHostLokal(kode, args[2])) {
-      if (peran !== 'host' || kodeAktif !== kode) { putuskan(); await bukaMeja(kode); }
+      if (peran !== 'host' || kodeAktif !== kode) {
+        putuskan();
+        await bukaMeja(kode, semuaBot(mesin.getStatusMeja(kode, args[2])));
+      }
       return jalankanLokal('gabungKamar', [kode, ...args.slice(1)]);
     }
     await sambungKeHost(kode);

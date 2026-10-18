@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Logo Meja Mahjong: ubin 中 (naga merah) di atas kain giok -->
+  <defs>
+    <radialGradient id="kain" cx="50%" cy="38%" r="75%">
+      <stop offset="0" stop-color="#1E5246"/>
+      <stop offset="1" stop-color="#0B211C"/>
+    </radialGradient>
+    <linearGradient id="muka" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFBF0"/>
+      <stop offset="1" stop-color="#EADFC4"/>
+    </linearGradient>
+  </defs>
+  <rect id="latar" rx="112" width="512" height="512" fill="url(#kain)"/>
+  <g id="ubin">
+    <rect x="124" y="104" width="248" height="328" rx="34" fill="#0A6E55"/>
+    <rect x="132" y="92" width="248" height="320" rx="32" fill="#C9A24A"/>
+    <rect x="140" y="84" width="236" height="316" rx="30" fill="url(#muka)"/>
+    <rect x="156" y="100" width="204" height="284" rx="20" fill="none" stroke="#D9CCAA" stroke-width="3"/>
+    <rect x="188" y="168" width="140" height="106" rx="8" fill="none" stroke="#B3261E" stroke-width="24"/>
+    <rect x="246" y="124" width="24" height="236" rx="6" fill="#B3261E"/>
+  </g>
+</svg>
