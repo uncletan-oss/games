@@ -216,6 +216,8 @@ button:disabled { background: #7f8c8d !important; cursor: not-allowed; animation
 #nama-pemain { width: 260px; font-weight: 600; }
 .in.wajib, .plakat input.wajib { border-color: var(--danger) !important; box-shadow: 0 0 0 3px rgba(179,38,30,.25); }
 
+.catatan-lokal { margin: 0; padding: 9px 14px; border-radius: 10px; font-size: 13px; line-height: 1.5;
+                 color: var(--muted); background: var(--panel-2); border: 1px dashed var(--line); }
 .resume { display: flex; align-items: center; gap: 14px; padding: 10px 14px; border-radius: 10px;
           background: rgba(201,162,74,.12); border: 1px solid rgba(201,162,74,.5); }
 .resume p { margin: 0; flex: 1; font-size: 14px; }

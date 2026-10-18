@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { panggil } from '../api.js';
+import { panggil, MODE_LOKAL } from '../api.js';
 import { bacaSesi } from '../sesi.js';
 import { ANGIN, LEVEL, kodeAcak } from '../konstanta.js';
 import { Plakat, Seg } from './Plakat.jsx';
@@ -107,6 +107,13 @@ export default function Home({ aktif, meja }) {
                    value={nama} onChange={e => { setNama(e.target.value); lepas('nama'); }} />
           </div>
         </header>
+
+        {MODE_LOKAL && import.meta.env.VITE_TARGET === 'pages' && (
+          <p className="catatan-lokal">
+            Mode lokal: server belum dihubungkan, jadi permainan hanya berjalan di perangkat ini.
+            Main melawan BOT tetap bisa; untuk main bersama teman, admin perlu mengisi URL server Apps Script.
+          </p>
+        )}
 
         {resume && (
           <div className="resume">

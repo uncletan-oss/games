@@ -12,6 +12,31 @@ function doGet() {
     .addMetaTag('viewport', 'width=device-width, initial-scale=1');
 }
 
+/** Fungsi yang boleh dipanggil client dari luar Apps Script (mis. GitHub Pages) lewat doPost. */
+const API_PUBLIK = {
+  buatKamar, gabungKamar, keluarKamar, daftarKamar, aturKursi, aturHint, mulaiPermainan, mainLagi,
+  getStatusMeja, ambilUbin, buangUbin, klaimUbin, tickKlaim, deklarasiKong, jalankanBot, mintaHint
+};
+
+/**
+ * Endpoint JSON untuk client di GitHub Pages.
+ * Body (text/plain agar tidak perlu preflight CORS): { "fn": "namaFungsi", "args": [...] }
+ * Balasan: { ok: true, data: ... } atau { ok: false, error: "pesan" }
+ */
+function doPost(e) {
+  let hasil;
+  try {
+    const req = JSON.parse((e && e.postData && e.postData.contents) || '{}');
+    const fn = Object.prototype.hasOwnProperty.call(API_PUBLIK, req.fn) ? API_PUBLIK[req.fn] : null;
+    if (!fn) throw new Error('Fungsi tidak dikenal.');
+    const data = fn.apply(null, Array.isArray(req.args) ? req.args : []);
+    hasil = { ok: true, data: data === undefined ? null : data };
+  } catch (err) {
+    hasil = { ok: false, error: err && err.message ? err.message : String(err) };
+  }
+  return ContentService.createTextOutput(JSON.stringify(hasil)).setMimeType(ContentService.MimeType.JSON);
+}
+
 const DICT = {
   "🀙":"d1","🀚":"d2","🀛":"d3","🀜":"d4","🀝":"d5","🀞":"d6","🀟":"d7","🀠":"d8","🀡":"d9",
   "🀐":"b1","🀑":"b2","🀒":"b3","🀓":"b4","🀔":"b5","🀕":"b6","🀖":"b7","🀗":"b8","🀘":"b9",

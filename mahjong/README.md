@@ -63,3 +63,31 @@ atau perbarui deployment yang sama.
 4. Deploy sebagai Web app.
 
 `gas/Index.html` hasil build ikut di-commit, jadi Cara B bisa dipakai tanpa Node.js.
+
+## Akses lewat GitHub Pages
+
+Halaman React bisa di-host di GitHub Pages, sedangkan server tetap di Apps Script.
+Dari Pages, client memanggil `doPost` Web App lewat `fetch` (bukan `google.script.run`).
+
+```
+Browser ──(GitHub Pages: tampilan React)──fetch POST──▶ Apps Script Web App /exec (doPost → Code.gs)
+```
+
+1. **Deploy Apps Script** seperti di atas (Web app, Execute as: *Me*, Who has access: *Anyone*).
+   Pastikan `Code.gs` versi terbaru (sudah berisi `doPost`). Salin URL yang berakhiran `/exec`.
+   Setiap kali `Code.gs` diubah, perbarui deployment (*Manage deployments → Edit → New version*)
+   supaya URL yang sama memakai kode baru.
+2. Di GitHub repo: **Settings → Secrets and variables → Actions → Variables → New repository variable**,
+   nama `GAS_URL`, isi URL `/exec` tadi.
+3. **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+4. Push ke branch default (atau jalankan workflow *GitHub Pages* secara manual di tab **Actions**).
+   Situs tersedia di `https://<user>.github.io/<repo>/mahjong/`.
+
+Tanpa `GAS_URL`, situs tetap jalan dalam **mode lokal**: `Code.gs` dijalankan di browser,
+cukup untuk main melawan BOT, tetapi tidak bisa main bersama teman dari perangkat lain.
+
+Build manual: `VITE_GAS_URL=https://script.google.com/macros/s/.../exec npm run build:pages`
+(hasil di `dist-pages/index.html`).
+
+Catatan: setiap panggilan lewat `fetch` ke Apps Script butuh sekitar 0,5–2 detik,
+jadi respons sedikit lebih lambat dibanding membuka Web App Apps Script secara langsung.

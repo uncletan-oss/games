@@ -1,8 +1,8 @@
 /**
- * Hanya untuk pengembangan lokal (`npm run dev`): menjalankan gas/Code.gs langsung di browser
+ * Mode lokal (`npm run dev`, atau GitHub Pages tanpa VITE_GAS_URL): menjalankan gas/Code.gs langsung di browser
  * dengan tiruan PropertiesService, CacheService, LockService, dan Utilities.
  * Data kamar disimpan di localStorage, jadi beberapa tab browser bisa bermain di meja yang sama.
- * File ini tidak ikut ke hasil build.
+ * File ini tidak ikut ke build Apps Script (gas/Index.html).
  */
 import kodeServer from '../../gas/Code.gs?raw';
 
