@@ -17,12 +17,13 @@
   --sans: 'Plus Jakarta Sans', 'Segoe UI', Arial, sans-serif;
 }
 * { box-sizing: border-box; }
-html, body { height: 100%; }
+html { height: 100%; overflow: hidden; }
 body {
   font-family: var(--sans);
   background-color: var(--bg); color: var(--text);
   text-align: center; margin: 0; padding: 8px;
-  height: 100vh; height: 100dvh; overflow: hidden;
+  /* --tinggi-layar = tinggi area yang benar-benar terlihat (diisi main.jsx), supaya pas 1 layar di HP */
+  height: 100vh; height: var(--tinggi-layar, 100vh); overflow: hidden;
   display: flex; flex-direction: column;
 }
 #root { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
@@ -241,9 +242,10 @@ button:disabled { background: #7f8c8d !important; cursor: not-allowed; animation
 .felt .kode:focus { outline: none; border-bottom-color: var(--brass-2); }
 .felt .mini { margin: 0; padding: 4px 10px; font-size: 12px; background: rgba(0,0,0,.28); color: var(--ivory); border: 1px solid rgba(242,234,216,.25); }
 
-.plakat { background: linear-gradient(180deg, #FBF5E7 0%, var(--ivory) 100%); color: var(--ink); border-radius: 10px;
+.plakat { display: flex; flex-direction: column; background: linear-gradient(180deg, #FBF5E7 0%, var(--ivory) 100%); color: var(--ink); border-radius: 10px;
           padding: 10px 11px; box-shadow: 0 3px 0 #C9B993, 0 10px 18px rgba(0,0,0,.35); min-width: 0; }
-.plakat.anda { box-shadow: 0 0 0 3px var(--brass), 0 3px 0 #C9B993, 0 10px 18px rgba(0,0,0,.35); }
+/* Bingkai di dalam kartu, supaya ukuran kartu Anda sama dengan kartu lain */
+.plakat.anda { box-shadow: inset 0 0 0 3px var(--brass), 0 3px 0 #C9B993, 0 10px 18px rgba(0,0,0,.35); }
 .plakat.kosong { background: rgba(242,234,216,.1); color: var(--ivory); box-shadow: none; border: 2px dashed rgba(242,234,216,.4); }
 .plakat-head { display: flex; align-items: center; gap: 9px; }
 .angin { font-family: var(--display); font-size: 30px; line-height: 1; width: 34px; text-align: center; flex: 0 0 auto; }
@@ -358,7 +360,7 @@ h3.sec { font-size: 15px; border-bottom: 1px solid #7f8c8d; padding-bottom: 5px;
   .nama-wrap { flex-direction: column; align-items: stretch; gap: 4px; }
   #nama-pemain { width: 100%; }
   .panel-gabung { min-height: 360px; }
-  .meja { grid-template-columns: minmax(0,1fr) minmax(0,1fr); grid-template-areas: "felt felt" "top right" "left bottom"; }
+  .meja { grid-template-columns: minmax(0,1fr) minmax(0,1fr); grid-template-areas: "felt felt" "top right" "left bottom"; align-items: stretch; }
   .felt { min-height: 110px; }
 }
 /* Layar pendek (laptop dengan banyak toolbar): versi ringkas supaya tetap 1 viewport */
