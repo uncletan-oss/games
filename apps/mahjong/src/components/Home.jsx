@@ -90,7 +90,7 @@ export default function Home({ aktif, meja }) {
     <div className="screen" style={{ display: aktif ? 'block' : 'none' }}>
       <div className="home">
         <header className="home-head">
-          <h1 className="brand">Meja Mahjong<small>Main ber-4 bersama teman atau BOT.</small></h1>
+          <h1 className="brand">Meja Mahjong<small><a className="ke-arena" href="../">← Semua game</a> · Main ber-4 bersama teman atau BOT.</small></h1>
           <div className="nama-wrap">
             <label htmlFor="nama-pemain">Nama Anda</label>
             <input className={'in' + (wajib.nama ? ' wajib' : '')} type="text" id="nama-pemain" ref={refNama}

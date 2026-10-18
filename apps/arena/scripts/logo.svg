@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Logo Arena Games: kartu As hati dan dadu di atas kain giok -->
+  <defs>
+    <radialGradient id="kain" cx="50%" cy="38%" r="75%">
+      <stop offset="0" stop-color="#1E5246"/>
+      <stop offset="1" stop-color="#0B211C"/>
+    </radialGradient>
+    <linearGradient id="muka" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFBF0"/>
+      <stop offset="1" stop-color="#EADFC4"/>
+    </linearGradient>
+    <linearGradient id="dadu" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#E0574A"/>
+      <stop offset="1" stop-color="#A82A20"/>
+    </linearGradient>
+  </defs>
+  <rect id="latar" width="512" height="512" fill="url(#kain)"/>
+  <g id="isi">
+    <g transform="rotate(-12 210 250)">
+      <rect x="112" y="104" width="196" height="276" rx="24" fill="#C9A24A"/>
+      <rect x="118" y="96" width="196" height="276" rx="24" fill="url(#muka)"/>
+      <text x="140" y="148" font-family="Georgia, serif" font-size="44" font-weight="700" fill="#B3261E">A</text>
+      <path d="M216 300 C150 252 160 196 196 196 C208 196 216 206 216 214 C216 206 224 196 236 196 C272 196 282 252 216 300 Z" fill="#B3261E"/>
+    </g>
+    <g transform="rotate(14 340 330)">
+      <rect x="252" y="250" width="168" height="168" rx="30" fill="#7A1A14"/>
+      <rect x="252" y="240" width="168" height="168" rx="30" fill="url(#dadu)"/>
+      <circle cx="294" cy="282" r="15" fill="#FFF6E5"/>
+      <circle cx="336" cy="324" r="15" fill="#FFF6E5"/>
+      <circle cx="378" cy="366" r="15" fill="#FFF6E5"/>
+    </g>
+  </g>
+</svg>

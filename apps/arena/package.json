@@ -1,0 +1,21 @@
+{
+  "name": "arena-games",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Kumpulan game (Ludo, Ular Tangga, Remi, Cangkul, Capsa, Ceki, Gaple) — React, peer-to-peer, GitHub Pages.",
+  "scripts": {
+    "dev": "vite",
+    "build": "node scripts/bersihkan.mjs && vite build",
+    "uji": "node scripts/uji-mesin.mjs"
+  },
+  "dependencies": {
+    "peerjs": "1.5.5",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^5.1.0",
+    "vite": "^7.2.0"
+  }
+}

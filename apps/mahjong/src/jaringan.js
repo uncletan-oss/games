@@ -123,7 +123,7 @@ async function bukaMeja(kode, bolehOffline) {
       kodeAktif = kode;
       p.on('connection', layaniTamu);
       // Terputus dari server signaling: sambung lagi supaya tamu baru tetap bisa masuk
-      p.on('disconnected', () => { if (peer === p && !p.destroyed) setTimeout(() => p.reconnect(), 1500); });
+      p.on('disconnected', () => setTimeout(() => { if (peer === p && !p.destroyed) p.reconnect(); }, 1500));
       p.on('error', () => {});
       return;
     } catch (e) {
