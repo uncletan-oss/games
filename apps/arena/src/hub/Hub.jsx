@@ -1,4 +1,5 @@
 import { KATEGORI, GAMES } from '../games/index.js';
+import { tautanGame } from '../rute.js';
 
 /** Halaman utama: daftar kategori dan game. */
 export default function Hub() {
@@ -19,7 +20,7 @@ export default function Hub() {
               {kat.games.map(id => {
                 const g = GAMES[id];
                 return (
-                  <a key={id} className={'kartu-game g-' + id} href={g.eksternal || '#/' + id}>
+                  <a key={id} className={'kartu-game g-' + id} href={g.eksternal || tautanGame(id)}>
                     <span className="ikon-game" aria-hidden="true">{g.ikon}</span>
                     <span className="nama-game">{g.nama}</span>
                     <span className="ringkas">{g.ringkas}</span>

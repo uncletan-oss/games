@@ -39,11 +39,11 @@ jobs:
           for app in arena mahjong; do (cd apps/$app && npm ci && npm run build); done
       - name: Commit hasil build bila berubah
         run: |
-          HASIL="mahjong index.html assets-arena arena-ikon sw.js manifest.webmanifest"
-          if [ -n "$(git status --porcelain $HASIL)" ]; then
+          # Semua hasil build ada di luar folder apps/ (akar situs, /mahjong, /<id-game>)
+          if [ -n "$(git status --porcelain -- . ':!apps')" ]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add -A $HASIL
+            git add -A -- . ':!apps'
             git commit -m "Build ulang situs dari apps/"
             git push
           else

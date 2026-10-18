@@ -7,6 +7,7 @@ import Beranda from './Beranda.jsx';
 import RuangTunggu from './RuangTunggu.jsx';
 import Meja from './Meja.jsx';
 import { Modal } from './ui.jsx';
+import { tautanSemuaGame, tautanUndangan } from '../rute.js';
 
 // Satu server & jaringan per game, bertahan selama halaman terbuka (meja host tetap jalan saat pindah halaman)
 const cache = {};
@@ -21,7 +22,7 @@ export default function GameShell({ id, kodeUndangan }) {
   const ruang = useRuang(id, jaringan);
   const [aturan, setAturan] = useState(false);
   const s = ruang.view;
-  const tautan = s ? `${location.origin}${location.pathname}#/${id}/${encodeURIComponent(s.roomCode)}` : '';
+  const tautan = s ? tautanUndangan(id, s.roomCode) : '';
 
   useEffect(() => { document.body.classList.toggle('sedang-main', ruang.layar === 'game'); }, [ruang.layar]);
   useEffect(() => () => document.body.classList.remove('sedang-main'), []);
@@ -35,7 +36,7 @@ export default function GameShell({ id, kodeUndangan }) {
     <>
       {ruang.layar !== 'game' && (
         <header className="kepala">
-          <a className="kembali" href="#/">← Semua game</a>
+          <a className="kembali" href={tautanSemuaGame()}>← Semua game</a>
           <h1>{game.ikonKecil || game.ikon} {game.nama}</h1>
           <button type="button" className="btn-kecil" onClick={() => setAturan(true)}>Aturan</button>
         </header>

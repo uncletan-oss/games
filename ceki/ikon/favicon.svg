@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <radialGradient id="kain" cx="50%" cy="38%" r="75%"><stop offset="0" stop-color="#1E5246"/><stop offset="1" stop-color="#0B211C"/></radialGradient>
+    <linearGradient id="muka" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFBF0"/><stop offset="1" stop-color="#EADFC4"/></linearGradient>
+    <linearGradient id="kayu" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#A56A37"/><stop offset="1" stop-color="#6E3F1B"/></linearGradient>
+  </defs>
+  <rect id="latar" rx="112" width="512" height="512" fill="url(#kain)"/>
+  <g id="isi"><g transform="rotate(-14 170 300)">
+      <rect x="124" y="128" width="100" height="270" rx="14" fill="#C9A24A"/>
+      <rect x="118" y="118" width="100" height="270" rx="14" fill="url(#muka)" stroke="#C8B98F" stroke-width="3"/>
+      <text x="168" y="270" font-family="WenQuanYi Zen Hei, sans-serif" font-size="92" font-weight="700" fill="#1F5FB0" text-anchor="middle">一</text>
+      <text x="168" y="360" font-family="WenQuanYi Zen Hei, DejaVu Sans, sans-serif" font-size="58" fill="#1F5FB0" text-anchor="middle">●</text>
+    </g><g transform="rotate(0 258 300)">
+      <rect x="212" y="128" width="100" height="270" rx="14" fill="#C9A24A"/>
+      <rect x="206" y="118" width="100" height="270" rx="14" fill="url(#muka)" stroke="#C8B98F" stroke-width="3"/>
+      <text x="256" y="270" font-family="WenQuanYi Zen Hei, sans-serif" font-size="92" font-weight="700" fill="#1E7A44" text-anchor="middle">五</text>
+      <text x="256" y="360" font-family="WenQuanYi Zen Hei, DejaVu Sans, sans-serif" font-size="58" fill="#1E7A44" text-anchor="middle">‖</text>
+    </g><g transform="rotate(14 346 300)">
+      <rect x="300" y="128" width="100" height="270" rx="14" fill="#C9A24A"/>
+      <rect x="294" y="118" width="100" height="270" rx="14" fill="url(#muka)" stroke="#C8B98F" stroke-width="3"/>
+      <text x="344" y="270" font-family="WenQuanYi Zen Hei, sans-serif" font-size="92" font-weight="700" fill="#B3261E" text-anchor="middle">九</text>
+      <text x="344" y="360" font-family="WenQuanYi Zen Hei, DejaVu Sans, sans-serif" font-size="58" fill="#B3261E" text-anchor="middle">萬</text>
+    </g></g>
+</svg>

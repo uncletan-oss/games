@@ -2,12 +2,7 @@ import { useEffect, useState } from 'react';
 import Hub from './hub/Hub.jsx';
 import GameShell from './platform/GameShell.jsx';
 import { GAMES } from './games/index.js';
-
-/** Rute dari hash: #/ → daftar game, #/ludo → game, #/ludo/KODE → undangan meja. */
-function bacaRute() {
-  const [, id, kode] = location.hash.replace(/^#/, '').split('/');
-  return GAMES[id] && GAMES[id].mesin ? { id, kode: kode ? decodeURIComponent(kode) : '' } : { id: null };
-}
+import { bacaRute } from './rute.js';
 
 export default function App() {
   const [rute, setRute] = useState(bacaRute);

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <radialGradient id="kain" cx="50%" cy="38%" r="75%"><stop offset="0" stop-color="#1E5246"/><stop offset="1" stop-color="#0B211C"/></radialGradient>
+    <linearGradient id="muka" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFBF0"/><stop offset="1" stop-color="#EADFC4"/></linearGradient>
+    <linearGradient id="kayu" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#A56A37"/><stop offset="1" stop-color="#6E3F1B"/></linearGradient>
+  </defs>
+  <rect id="latar" rx="112" width="512" height="512" fill="url(#kain)"/>
+  <g id="isi"><g transform="rotate(-16 196 262)">
+    <rect x="125" y="140" width="130" height="260" rx="18" fill="#C9A24A"/>
+    <rect x="131" y="132" width="130" height="260" rx="18" fill="url(#muka)" stroke="#D9CCAA" stroke-width="2"/>
+    <line x1="145" y1="262" x2="247" y2="262" stroke="#A79F8B" stroke-width="5" stroke-linecap="round"/>
+    <circle cx="160.9" cy="161.9" r="11.05" fill="#B3261E"/><circle cx="231.1" cy="161.9" r="11.05" fill="#B3261E"/><circle cx="160.9" cy="197" r="11.05" fill="#B3261E"/><circle cx="231.1" cy="197" r="11.05" fill="#B3261E"/><circle cx="160.9" cy="232.1" r="11.05" fill="#B3261E"/><circle cx="231.1" cy="232.1" r="11.05" fill="#B3261E"/><circle cx="160.9" cy="291.9" r="11.05" fill="#B3261E"/><circle cx="231.1" cy="291.9" r="11.05" fill="#B3261E"/><circle cx="160.9" cy="327" r="11.05" fill="#B3261E"/><circle cx="231.1" cy="327" r="11.05" fill="#B3261E"/><circle cx="160.9" cy="362.1" r="11.05" fill="#B3261E"/><circle cx="231.1" cy="362.1" r="11.05" fill="#B3261E"/>
+  </g><g transform="rotate(14 318 270)">
+    <rect x="247" y="148" width="130" height="260" rx="18" fill="#C9A24A"/>
+    <rect x="253" y="140" width="130" height="260" rx="18" fill="url(#muka)" stroke="#D9CCAA" stroke-width="2"/>
+    <line x1="267" y1="270" x2="369" y2="270" stroke="#A79F8B" stroke-width="5" stroke-linecap="round"/>
+    <circle cx="282.9" cy="169.9" r="11.05" fill="#1d1d1b"/><circle cx="318" cy="205" r="11.05" fill="#1d1d1b"/><circle cx="353.1" cy="240.1" r="11.05" fill="#1d1d1b"/><circle cx="282.9" cy="299.9" r="11.05" fill="#1d1d1b"/><circle cx="353.1" cy="299.9" r="11.05" fill="#1d1d1b"/><circle cx="318" cy="335" r="11.05" fill="#1d1d1b"/><circle cx="282.9" cy="370.1" r="11.05" fill="#1d1d1b"/><circle cx="353.1" cy="370.1" r="11.05" fill="#1d1d1b"/>
+  </g></g>
+</svg>

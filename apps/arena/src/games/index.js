@@ -1,3 +1,4 @@
+import { META } from './meta.js';
 import ludo from './ludo/mesin.js';
 import ulartangga from './ulartangga/mesin.js';
 import remi from './remi/mesin.js';
@@ -31,8 +32,7 @@ export const KATEGORI = [
 
 export const GAMES = {
   ludo: {
-    mesin: ludo, Papan: PapanLudo, nama: 'Ludo', kategori: 'papan', min: 2, maks: 4, bawaan: 4, ikon: '🔴',
-    ringkas: 'Balapan 4 bidak keliling papan sampai rumah. Makan bidak lawan!',
+    mesin: ludo, Papan: PapanLudo, kategori: 'papan', min: 2, maks: 4, bawaan: 4, ikon: '🔴',
     aturan: [
       'Lempar dadu di giliran Anda. Bidak keluar kandang hanya dengan angka 6.',
       'Ketuk bidak yang menyala untuk menjalankannya. Jika hanya satu pilihan, bidak jalan otomatis.',
@@ -42,8 +42,7 @@ export const GAMES = {
     ]
   },
   ulartangga: {
-    mesin: ulartangga, Papan: PapanUlar, nama: 'Ular Tangga', kategori: 'papan', min: 2, maks: 4, bawaan: 4, ikon: '🐍',
-    ringkas: 'Naik tangga, hindari ular. Siapa duluan sampai 100?',
+    mesin: ulartangga, Papan: PapanUlar, kategori: 'papan', min: 2, maks: 4, bawaan: 4, ikon: '🐍',
     aturan: [
       'Lempar dadu dan maju sesuai angka. Angka 6 = lempar lagi.',
       'Berhenti di kaki tangga: naik. Berhenti di kepala ular: turun ke ekornya.',
@@ -51,8 +50,7 @@ export const GAMES = {
     ]
   },
   remi: {
-    mesin: remi, Papan: PapanRemi, nama: 'Remi', kategori: 'kartu', min: 2, maks: 4, bawaan: 4, ikon: '🂡',
-    ringkas: 'Susun 7 kartu jadi seri & trengguli, lalu TUTUP.',
+    mesin: remi, Papan: PapanRemi, kategori: 'kartu', min: 2, maks: 4, bawaan: 4, ikon: '🂡',
     aturan: [
       'Tiap pemain memegang 7 kartu. Di giliran Anda: ambil 1 kartu dari tumpukan tertutup atau kartu teratas buangan, lalu buang 1 kartu.',
       'Seri: 3 kartu atau lebih berurutan dengan jenis sama (As bisa A-2-3 atau Q-K-A). Trengguli: 3–4 kartu berangka sama.',
@@ -62,8 +60,7 @@ export const GAMES = {
     ]
   },
   cangkul: {
-    mesin: cangkul, Papan: PapanCangkul, nama: 'Cangkul', kategori: 'kartu', min: 2, maks: 4, bawaan: 4, ikon: '♠',
-    ringkas: 'Ikuti jenis kartu, tidak punya? Mencangkul! Habiskan kartu duluan.',
+    mesin: cangkul, Papan: PapanCangkul, kategori: 'kartu', min: 2, maks: 4, bawaan: 4, ikon: '♠',
     aturan: [
       'Tiap pemain memegang 7 kartu. Pembuka putaran memainkan kartu apa saja.',
       'Pemain lain wajib membalas dengan jenis yang sama (♠ ♥ ♦ ♣).',
@@ -73,8 +70,7 @@ export const GAMES = {
     ]
   },
   capsa: {
-    mesin: capsa, Papan: PapanCapsa, nama: 'Capsa', kategori: 'kartu', min: 2, maks: 4, bawaan: 4, ikon: '♦',
-    ringkas: 'Capsa banting / Big Two: buang kombinasi lebih tinggi, habiskan 13 kartu.',
+    mesin: capsa, Papan: PapanCapsa, kategori: 'kartu', min: 2, maks: 4, bawaan: 4, ikon: '♦',
     aturan: [
       'Tiap pemain 13 kartu. Urutan: 3 terendah … K, As, 2 tertinggi. Jenis: ♦ < ♣ < ♥ < ♠.',
       'Pemegang 3♦ jalan pertama dan wajib memakai 3♦.',
@@ -84,8 +80,7 @@ export const GAMES = {
     ]
   },
   ceki: {
-    mesin: ceki, Papan: PapanCeki, nama: 'Ceki', kategori: 'kartu', min: 2, maks: 4, bawaan: 4, ikon: '萬',
-    ringkas: 'Kartu ceki versi sederhana: susun 4 set, teriak CEKI!',
+    mesin: ceki, Papan: PapanCeki, kategori: 'kartu', min: 2, maks: 4, bawaan: 4, ikon: '萬',
     aturan: [
       'Kartu ceki: 3 jenis — Bulat ●, Tali ‖, Ribu 萬 — bernilai 1–9, masing-masing 4 lembar.',
       'Tiap pemain 11 kartu. Di giliran Anda: ambil 1 kartu (tumpukan atau buangan teratas), lalu buang 1 kartu.',
@@ -95,8 +90,7 @@ export const GAMES = {
     ]
   },
   gaple: {
-    mesin: gaple, Papan: PapanGaple, nama: 'Gaple', kategori: 'domino', min: 2, maks: 4, bawaan: 4, ikon: '🁣',
-    ringkas: 'Domino balak: sambung ujung rantai, habiskan kartu duluan.',
+    mesin: gaple, Papan: PapanGaple, kategori: 'domino', min: 2, maks: 4, bawaan: 4, ikon: '🁣',
     aturan: [
       'Tiap pemain 7 kartu domino. Ronde pertama dibuka pemegang balak 6 [6|6]; ronde berikutnya dibuka pemenang sebelumnya.',
       'Pasang kartu yang angkanya cocok dengan salah satu ujung rantai. Jika cocok di dua ujung, pilih ujungnya.',
@@ -105,8 +99,7 @@ export const GAMES = {
     ]
   },
   uno: {
-    mesin: uno, Papan: PapanUno, nama: 'Uno', kategori: 'kartu', min: 2, maks: 4, bawaan: 4, ikon: 'UNO', ikonKecil: '🃏',
-    ringkas: 'Cocokkan warna atau angka, jebak lawan dengan +2 dan +4!',
+    mesin: uno, Papan: PapanUno, kategori: 'kartu', min: 2, maks: 4, bawaan: 4, ikon: 'UNO', ikonKecil: '🃏',
     aturan: [
       'Tiap pemain 7 kartu. Mainkan kartu yang warna ATAU angka/simbolnya sama dengan kartu teratas.',
       'Kartu ganti warna (★) dan +4 bisa dimainkan kapan saja; pilih warna berikutnya.',
@@ -117,8 +110,7 @@ export const GAMES = {
     ]
   },
   catur: {
-    mesin: catur, Papan: PapanCatur, nama: 'Catur', kategori: 'strategi', min: 2, maks: 2, bawaan: 2, ikon: '♞\uFE0E',
-    ringkas: 'Catur aturan lengkap. Skak mat raja lawan!',
+    mesin: catur, Papan: PapanCatur, kategori: 'strategi', min: 2, maks: 2, bawaan: 2, ikon: '♞\uFE0E',
     aturan: [
       'Ketuk bidak Anda, lalu ketuk petak bertitik untuk melangkah. Putih jalan duluan; warna bertukar tiap ronde.',
       'Aturan lengkap: rokade, en passant, dan promosi pion (pilih Menteri, Benteng, Gajah, atau Kuda).',
@@ -127,8 +119,7 @@ export const GAMES = {
     ]
   },
   halma: {
-    mesin: halma, Papan: PapanHalma, nama: 'Halma', kategori: 'strategi', min: 2, maks: 4, bawaan: 2, ikon: '✡\uFE0E',
-    ringkas: 'Dam bintang: lompat berantai, pindahkan 10 bidak ke sudut seberang.',
+    mesin: halma, Papan: PapanHalma, kategori: 'strategi', min: 2, maks: 4, bawaan: 2, ikon: '✡\uFE0E',
     aturan: [
       'Papan bintang, tiap pemain 10 bidak di satu sudut. Tujuan: memindahkan semua bidak ke sudut seberang.',
       'Di giliran Anda, geser satu bidak ke lubang tetangga yang kosong, ATAU lompati satu bidak (milik siapa saja) ke lubang kosong di baliknya.',
@@ -138,8 +129,7 @@ export const GAMES = {
     ]
   },
   congklak: {
-    mesin: congklak, Papan: PapanCongklak, nama: 'Congklak', kategori: 'strategi', min: 2, maks: 2, bawaan: 2, ikon: '◉',
-    ringkas: 'Dakon: sebar biji, tembak lubang lawan, penuhi lumbungmu.',
+    mesin: congklak, Papan: PapanCongklak, kategori: 'strategi', min: 2, maks: 2, bawaan: 2, ikon: '◉',
     aturan: [
       'Tiap pemain punya 7 lubang (masing-masing 7 biji) dan 1 lumbung. Lubang Anda di baris bawah, lumbung Anda di kanan.',
       'Pilih satu lubang, biji disebar satu per satu berlawanan arah jarum jam (melewati lumbung lawan).',
@@ -154,5 +144,8 @@ export const GAMES = {
   }
 };
 
-// Melengkapi info min/maks ke mesin (dibaca server meja)
-Object.entries(GAMES).forEach(([id, g]) => { if (g.mesin) Object.assign(g.mesin, { id, min: g.min, maks: g.maks }); });
+// Nama & ringkasan dari META; info min/maks juga disalin ke mesin (dibaca server meja)
+Object.entries(GAMES).forEach(([id, g]) => {
+  if (META[id]) Object.assign(g, META[id]);
+  if (g.mesin) Object.assign(g.mesin, { id, min: g.min, maks: g.maks });
+});

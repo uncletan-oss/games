@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <radialGradient id="kain" cx="50%" cy="38%" r="75%"><stop offset="0" stop-color="#1E5246"/><stop offset="1" stop-color="#0B211C"/></radialGradient>
+    <linearGradient id="muka" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFBF0"/><stop offset="1" stop-color="#EADFC4"/></linearGradient>
+    <linearGradient id="kayu" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#A56A37"/><stop offset="1" stop-color="#6E3F1B"/></linearGradient>
+  </defs>
+  <rect id="latar" rx="112" width="512" height="512" fill="url(#kain)"/>
+  <g id="isi"><g transform="rotate(-21 256 470) translate(6 12)">
+        <rect x="174" y="118" width="164" height="236" rx="20" fill="rgba(0,0,0,.35)"/>
+        <rect x="168" y="108" width="164" height="236" rx="20" fill="#D7262E" stroke="#fff" stroke-width="9"/>
+        <ellipse cx="250" cy="226" rx="56" ry="80" fill="#fff" transform="rotate(28 250 226)"/>
+        <text x="250" y="252" font-family="DejaVu Serif, Georgia, serif" font-weight="700" font-size="76" fill="#D7262E" text-anchor="middle" font-family="DejaVu Sans" font-style="italic">7</text>
+      </g><g transform="rotate(-7 256 470) translate(6 12)">
+        <rect x="174" y="118" width="164" height="236" rx="20" fill="rgba(0,0,0,.35)"/>
+        <rect x="168" y="108" width="164" height="236" rx="20" fill="#EDB21B" stroke="#fff" stroke-width="9"/>
+        <ellipse cx="250" cy="226" rx="56" ry="80" fill="#fff" transform="rotate(28 250 226)"/>
+        <text x="250" y="252" font-family="DejaVu Serif, Georgia, serif" font-weight="700" font-size="76" fill="#EDB21B" text-anchor="middle" font-family="DejaVu Sans" font-style="italic">2</text>
+      </g><g transform="rotate(7 256 470) translate(6 12)">
+        <rect x="174" y="118" width="164" height="236" rx="20" fill="rgba(0,0,0,.35)"/>
+        <rect x="168" y="108" width="164" height="236" rx="20" fill="#2E9E4B" stroke="#fff" stroke-width="9"/>
+        <ellipse cx="250" cy="226" rx="56" ry="80" fill="#fff" transform="rotate(28 250 226)"/>
+        <text x="250" y="252" font-family="DejaVu Serif, Georgia, serif" font-weight="700" font-size="76" fill="#2E9E4B" text-anchor="middle" font-family="DejaVu Sans" font-style="italic">⇄</text>
+      </g><g transform="rotate(21 256 470) translate(6 12)">
+        <rect x="174" y="118" width="164" height="236" rx="20" fill="rgba(0,0,0,.35)"/>
+        <rect x="168" y="108" width="164" height="236" rx="20" fill="#1E6FD0" stroke="#fff" stroke-width="9"/>
+        <ellipse cx="250" cy="226" rx="56" ry="80" fill="#fff" transform="rotate(28 250 226)"/>
+        <text x="250" y="252" font-family="DejaVu Serif, Georgia, serif" font-weight="700" font-size="66" fill="#1E6FD0" text-anchor="middle" font-family="DejaVu Sans" font-style="italic">+4</text>
+      </g></g>
+</svg>
