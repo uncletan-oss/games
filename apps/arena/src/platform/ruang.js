@@ -265,7 +265,8 @@ export function buatServer(game) {
       if (!s) throw new Error('KAMAR_TIDAK_ADA');
       const me = idxDariToken(s, token);
       if (s.status !== 'playing' || s.hasil) return untukPemain(s, me);
-      if (game.giliran(s.main) !== me) throw new Error('Belum giliran Anda.');
+      const bebas = game.diLuarGiliran && game.diLuarGiliran(aksi || {});   // mis. menyerah di catur
+      if (game.giliran(s.main) !== me && !bebas) throw new Error('Belum giliran Anda.');
       game.aksi(s.main, me, aksi || {});
       setelahAksi(s);
       simpan(s);

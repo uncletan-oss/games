@@ -5,6 +5,10 @@ import cangkul from './cangkul/mesin.js';
 import capsa from './capsa/mesin.js';
 import ceki from './ceki/mesin.js';
 import gaple from './gaple/mesin.js';
+import uno from './uno/mesin.js';
+import catur from './catur/mesin.js';
+import halma from './halma/mesin.js';
+import congklak from './congklak/mesin.js';
 import PapanLudo from './ludo/Papan.jsx';
 import PapanUlar from './ulartangga/Papan.jsx';
 import PapanRemi from './remi/Papan.jsx';
@@ -12,10 +16,15 @@ import PapanCangkul from './cangkul/Papan.jsx';
 import PapanCapsa from './capsa/Papan.jsx';
 import PapanCeki from './ceki/Papan.jsx';
 import PapanGaple from './gaple/Papan.jsx';
+import PapanUno from './uno/Papan.jsx';
+import PapanCatur from './catur/Papan.jsx';
+import PapanHalma from './halma/Papan.jsx';
+import PapanCongklak from './congklak/Papan.jsx';
 
 export const KATEGORI = [
-  { id: 'papan', nama: 'Papan', ikon: '🎲', sub: 'Lempar dadu, jalankan bidak.', games: ['ludo', 'ulartangga'] },
-  { id: 'kartu', nama: 'Kartu', ikon: '🃏', sub: 'Remi, Cangkul, Capsa, dan kartu Ceki.', games: ['remi', 'cangkul', 'capsa', 'ceki'] },
+  { id: 'papan', nama: 'Papan Dadu', ikon: '🎲', sub: 'Lempar dadu, jalankan bidak.', games: ['ludo', 'ulartangga'] },
+  { id: 'strategi', nama: 'Strategi', ikon: '♟\uFE0E', sub: 'Tanpa dadu, adu taktik.', games: ['catur', 'halma', 'congklak'] },
+  { id: 'kartu', nama: 'Kartu', ikon: '🃏', sub: 'Uno, Remi, Cangkul, Capsa, dan kartu Ceki.', games: ['uno', 'remi', 'cangkul', 'capsa', 'ceki'] },
   { id: 'domino', nama: 'Domino', ikon: '🁫', sub: 'Sambung kartu balak.', games: ['gaple'] },
   { id: 'ubin', nama: 'Ubin', ikon: '🀄', sub: 'Susun ubin jadi set.', games: ['mahjong'] }
 ];
@@ -93,6 +102,50 @@ export const GAMES = {
       'Pasang kartu yang angkanya cocok dengan salah satu ujung rantai. Jika cocok di dua ujung, pilih ujungnya.',
       'Tidak punya kartu yang cocok = Lewat (ketuk).',
       'Yang pertama menghabiskan kartu menang (GAPLE!). Jika semua buntu, mata terkecil yang menang.'
+    ]
+  },
+  uno: {
+    mesin: uno, Papan: PapanUno, nama: 'Uno', kategori: 'kartu', min: 2, maks: 4, bawaan: 4, ikon: 'UNO', ikonKecil: '🃏',
+    ringkas: 'Cocokkan warna atau angka, jebak lawan dengan +2 dan +4!',
+    aturan: [
+      'Tiap pemain 7 kartu. Mainkan kartu yang warna ATAU angka/simbolnya sama dengan kartu teratas.',
+      'Kartu ganti warna (★) dan +4 bisa dimainkan kapan saja; pilih warna berikutnya.',
+      'Lewati (⊘): pemain berikutnya dilewati. Putar (⇄): arah giliran berbalik (dengan 2 pemain sama dengan Lewati).',
+      '+2 / +4: pemain berikutnya mengambil 2 / 4 kartu dan kehilangan giliran.',
+      'Tidak bisa/mau main: ketuk tumpukan untuk mengambil 1 kartu. Jika kartu itu cocok boleh langsung dimainkan, kalau tidak giliran lewat.',
+      'Yang pertama menghabiskan kartu menang.'
+    ]
+  },
+  catur: {
+    mesin: catur, Papan: PapanCatur, nama: 'Catur', kategori: 'strategi', min: 2, maks: 2, bawaan: 2, ikon: '♞\uFE0E',
+    ringkas: 'Catur aturan lengkap. Skak mat raja lawan!',
+    aturan: [
+      'Ketuk bidak Anda, lalu ketuk petak bertitik untuk melangkah. Putih jalan duluan; warna bertukar tiap ronde.',
+      'Aturan lengkap: rokade, en passant, dan promosi pion (pilih Menteri, Benteng, Gajah, atau Kuda).',
+      'Skak mat = menang. Pat (tidak ada langkah sah tanpa skak), 50 langkah tanpa makan/pion, posisi terulang 3 kali, atau bidak tidak cukup = remis.',
+      'Tombol Menyerah bisa dipakai kapan saja.'
+    ]
+  },
+  halma: {
+    mesin: halma, Papan: PapanHalma, nama: 'Halma', kategori: 'strategi', min: 2, maks: 4, bawaan: 2, ikon: '✡\uFE0E',
+    ringkas: 'Dam bintang: lompat berantai, pindahkan 10 bidak ke sudut seberang.',
+    aturan: [
+      'Papan bintang, tiap pemain 10 bidak di satu sudut. Tujuan: memindahkan semua bidak ke sudut seberang.',
+      'Di giliran Anda, geser satu bidak ke lubang tetangga yang kosong, ATAU lompati satu bidak (milik siapa saja) ke lubang kosong di baliknya.',
+      'Lompatan boleh berantai dalam satu giliran — titik di papan menunjukkan semua tujuan yang bisa dicapai.',
+      'Supaya tidak bisa dihalangi: jika sudut tujuan penuh dan hanya berisi bidak Anda atau bidak lawan yang belum keluar dari kandangnya, Anda menang.',
+      'Untuk 2–4 pemain (versi 6 pemain belum tersedia).'
+    ]
+  },
+  congklak: {
+    mesin: congklak, Papan: PapanCongklak, nama: 'Congklak', kategori: 'strategi', min: 2, maks: 2, bawaan: 2, ikon: '◉',
+    ringkas: 'Dakon: sebar biji, tembak lubang lawan, penuhi lumbungmu.',
+    aturan: [
+      'Tiap pemain punya 7 lubang (masing-masing 7 biji) dan 1 lumbung. Lubang Anda di baris bawah, lumbung Anda di kanan.',
+      'Pilih satu lubang, biji disebar satu per satu berlawanan arah jarum jam (melewati lumbung lawan).',
+      'Biji terakhir di lubang berisi: ambil semua isinya dan lanjut menyebar.',
+      'Biji terakhir di lumbung sendiri: main lagi. Di lubang kosong milik sendiri: tembak — biji itu dan isi lubang lawan di seberangnya masuk lumbung Anda.',
+      'Permainan selesai bila pemain yang mendapat giliran tidak punya biji. Lumbung terbanyak menang.'
     ]
   },
   mahjong: {

@@ -9,7 +9,7 @@ export default function Meja({ game, s, ruang, onAturan }) {
   return (
     <div className="layar-main">
       <div className="bar-atas">
-        <span className="judul-game">{game.ikon} {game.nama}</span>
+        <span className="judul-game">{game.ikonKecil || game.ikon} {game.nama}</span>
         <span className="info-meja">{s.roomCode} · ronde {s.ronde}</span>
         <button type="button" className="btn-kecil" onClick={onAturan}>Aturan</button>
         <button type="button" className="btn-kecil merah" onClick={ruang.keluar}>Keluar</button>

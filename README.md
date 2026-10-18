@@ -4,8 +4,10 @@ Kumpulan game web statis, gratis di GitHub Pages: **https://uncletan-oss.github.
 
 | Kategori | Game | Pemain |
 |---|---|---|
-| 🎲 Papan | Ludo, Ular Tangga | 2–4 |
-| 🃏 Kartu | Remi, Cangkul, Capsa (banting / Big Two), Ceki (versi sederhana) | 2–4 |
+| 🎲 Papan Dadu | Ludo, Ular Tangga | 2–4 |
+| ♟ Strategi | Catur, Congklak | 2 |
+| ♟ Strategi | Halma (dam bintang) | 2–4 |
+| 🃏 Kartu | Uno, Remi, Cangkul, Capsa (banting / Big Two), Ceki (versi sederhana) | 2–4 |
 | 🁫 Domino | Gaple | 2–4 |
 | 🀄 Ubin | [Mahjong](https://uncletan-oss.github.io/games/mahjong/) | 4 |
 
