@@ -235,6 +235,8 @@ export default function Game({ s, meja }) {
           <button type="button" className="tt-keluar" onClick={meja.keluarPermainan} aria-label="Keluar dari meja">Keluar</button>
         </div>
 
+        {meja.putus && <div className="banner-putus" role="status">Koneksi ke host terputus, menyambung ulang...</div>}
+
         {s.klaim && !s.gameOver && <PanelKlaim s={s} meja={meja} />}
 
         {hd && hd.jenis !== 'klaim' && (

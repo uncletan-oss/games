@@ -1,40 +1,40 @@
 /**
- * Mahjong 4 Pemain + BOT AI — Server (Google Apps Script)
+ * Mesin permainan Mahjong 4 pemain + BOT AI.
  * Fitur: Pong / Chow / Kong dari buangan, Kong sendiri (tertutup & tambahan),
  *        Ron (menang dari buangan), Tsumo, hint langsung untuk pemain.
  *
- * Client-nya ditulis dengan React (folder src/) dan di-build menjadi satu file Index.html.
+ * Berjalan di browser HOST (dulu di Google Apps Script). Pemain lain memanggil fungsi API
+ * di bawah lewat koneksi peer-to-peer (lihat src/jaringan.js). State meja disimpan di
+ * localStorage host supaya meja tetap ada bila host me-refresh halaman.
  */
 
-function doGet() {
-  return HtmlService.createHtmlOutputFromFile('Index')
-    .setTitle('Mahjong 4 Pemain + BOT AI')
-    .addMetaTag('viewport', 'width=device-width, initial-scale=1');
-}
-
-/** Fungsi yang boleh dipanggil client dari luar Apps Script (mis. GitHub Pages) lewat doPost. */
-const API_PUBLIK = {
-  buatKamar, gabungKamar, keluarKamar, daftarKamar, aturKursi, aturHint, mulaiPermainan, mainLagi,
-  getStatusMeja, ambilUbin, buangUbin, klaimUbin, tickKlaim, deklarasiKong, jalankanBot, mintaHint
-};
-
-/**
- * Endpoint JSON untuk client di GitHub Pages.
- * Body (text/plain agar tidak perlu preflight CORS): { "fn": "namaFungsi", "args": [...] }
- * Balasan: { ok: true, data: ... } atau { ok: false, error: "pesan" }
- */
-function doPost(e) {
-  let hasil;
-  try {
-    const req = JSON.parse((e && e.postData && e.postData.contents) || '{}');
-    const fn = Object.prototype.hasOwnProperty.call(API_PUBLIK, req.fn) ? API_PUBLIK[req.fn] : null;
-    if (!fn) throw new Error('Fungsi tidak dikenal.');
-    const data = fn.apply(null, Array.isArray(req.args) ? req.args : []);
-    hasil = { ok: true, data: data === undefined ? null : data };
-  } catch (err) {
-    hasil = { ok: false, error: err && err.message ? err.message : String(err) };
+/* Pengganti PropertiesService / CacheService Apps Script */
+const AWALAN_SIMPAN = 'mahjong_meja:';
+const simpanan_ = {
+  getProperty: k => { try { return localStorage.getItem(AWALAN_SIMPAN + k); } catch (e) { return memori_[k] || null; } },
+  setProperty: (k, v) => { memori_[k] = v; try { localStorage.setItem(AWALAN_SIMPAN + k, v); } catch (e) {} },
+  deleteProperty: k => { delete memori_[k]; try { localStorage.removeItem(AWALAN_SIMPAN + k); } catch (e) {} },
+  getProperties: () => {
+    const hasil = Object.assign({}, memori_);
+    try {
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (k.indexOf(AWALAN_SIMPAN) === 0) hasil[k.slice(AWALAN_SIMPAN.length)] = localStorage.getItem(k);
+      }
+    } catch (e) {}
+    return hasil;
   }
-  return ContentService.createTextOutput(JSON.stringify(hasil)).setMimeType(ContentService.MimeType.JSON);
+};
+const memori_ = {};
+const PropertiesService = { getScriptProperties: () => simpanan_ };
+const CacheService = { getScriptCache: () => ({ get: () => null, put: () => {}, remove: () => {} }) };
+
+function uuid_() {
+  if (typeof crypto !== 'undefined' && crypto.randomUUID) return crypto.randomUUID();
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+    const r = Math.random() * 16 | 0;
+    return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+  });
 }
 
 const DICT = {
@@ -76,7 +76,7 @@ function buatKamar(kodeKamar, cfg, paksa, tokenLama) {
       if (!paksa) throw new Error('KAMAR_AKTIF');
     }
     bersihkanKamarLama_();
-    const token = Utilities.getUuid();
+    const token = uuid_();
     const state = kamarBaru_(kode, cfg, nama, token);
     simpanState_(state);
     return { token: token, view: untukPemain_(state, 0) };
@@ -98,7 +98,7 @@ function gabungKamar(kodeKamar, nama, token) {
       // Kursi yang ditinggal pemain (sementara dimainkan BOT) boleh diambil alih
       const kosong = state.seats.findIndex(s => s.ditinggal);
       if (kosong === -1) throw new Error('KAMAR_SUDAH_MAIN');
-      const tk2 = Utilities.getUuid();
+      const tk2 = uuid_();
       const nm2 = namaUnik_(state, nm, kosong);
       state.seats[kosong] = { name: nm2, token: tk2, bot: null };
       delete state.bots[kosong];
@@ -114,7 +114,7 @@ function gabungKamar(kodeKamar, nama, token) {
       if (!kosong.length) throw new Error('KAMAR_PENUH');
       throw new Error('KURSI_DIPESAN:' + kosong.map(s => s.pesan).join(', '));
     }
-    const tk = Utilities.getUuid();
+    const tk = uuid_();
     state.seats[idx].token = tk;
     state.seats[idx].name = state.seats[idx].pesan || namaUnik_(state, nm, idx);
     state.log = `${state.seats[idx].name} bergabung.`;
@@ -951,7 +951,7 @@ function mulaiRonde_(state) {
   }));
   Object.assign(state, {
     status: 'playing',
-    gameId: Utilities.getUuid(),
+    gameId: uuid_(),
     deck: deck,
     turn: state.dealer,
     hasDrawn: false,
@@ -1073,10 +1073,9 @@ function namaUnik_(state, nama, kecuali) {
   return n;
 }
 
+/** JavaScript di browser berjalan satu thread, jadi setiap panggilan API sudah atomik. */
 function denganKunci_(fn) {
-  const lock = LockService.getScriptLock();
-  if (!lock.tryLock(10000)) throw new Error('Server sedang sibuk, coba lagi.');
-  try { return fn(); } finally { lock.releaseLock(); }
+  return fn();
 }
 
 /** dariCache=true dipakai polling (hemat kuota Properties); operasi tulis selalu baca Properties. */
@@ -1152,3 +1151,15 @@ function samaIsi_(a, b) {
   const x = a.slice().sort(), y = b.slice().sort();
   return x.every((t, i) => t === y[i]);
 }
+
+/** Apakah token ini milik host meja yang tersimpan di perangkat ini (untuk melanjutkan meja setelah refresh). */
+function adalahHostLokal(kodeKamar, token) {
+  const state = bacaState_(normalKode_(kodeKamar));
+  return !!(state && token && state.seats[state.host] && state.seats[state.host].token === token);
+}
+
+export {
+  buatKamar, gabungKamar, keluarKamar, daftarKamar, aturKursi, aturHint, mulaiPermainan, mainLagi,
+  getStatusMeja, ambilUbin, buangUbin, klaimUbin, tickKlaim, deklarasiKong, jalankanBot, mintaHint,
+  normalKode_, hapusKamar_, adalahHostLokal
+};

@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import { panggil, MODE_LOKAL } from '../api.js';
 import { bacaSesi } from '../sesi.js';
 import { ANGIN, LEVEL, kodeAcak } from '../konstanta.js';
 import { Plakat, Seg } from './Plakat.jsx';
@@ -12,11 +11,11 @@ export default function Home({ aktif, meja }) {
   const [nama, setNama] = useState(() => (bacaSesi() || {}).nama || '');
   const [kode, setKode] = useState(kodeAcak);
   const [hintOn, setHintOn] = useState(true);
-  const [joinKode, setJoinKode] = useState('');
+  // Tautan undangan: .../mahjong/?meja=KODE langsung mengisi kode meja
+  const [joinKode, setJoinKode] = useState(() => new URLSearchParams(location.search).get('meja') || '');
   const [seatCfg, setSeatCfg] = useState({ 1: CFG_AWAL, 2: CFG_AWAL, 3: CFG_AWAL });
   const [wajib, setWajib] = useState({});           // field yang ditandai merah
   const [resume, setResume] = useState(() => { const s = bacaSesi(); return s && s.room && s.token ? s : null; });
-  const [daftar, setDaftar] = useState(null);
   const refNama = useRef(), refJoin = useRef(), refKursi = useRef({});
 
   // Kembali ke layar awal (setelah keluar meja): kode baru & sesi lama sudah dihapus
@@ -30,14 +29,6 @@ export default function Home({ aktif, meja }) {
     pernahAktif.current = aktif;
   }, [aktif]);
 
-  // Daftar meja diperbarui tiap 8 detik selama layar ini tampil
-  useEffect(() => {
-    if (!aktif) return;
-    const muat = () => { if (!document.hidden) panggil('daftarKamar').then(setDaftar, () => {}); };
-    muat();
-    const id = setInterval(muat, 8000);
-    return () => clearInterval(id);
-  }, [aktif]);
 
   const tandai = k => setWajib(w => ({ ...w, [k]: true }));
   const lepas = k => setWajib(w => ({ ...w, [k]: false }));
@@ -76,9 +67,9 @@ export default function Home({ aktif, meja }) {
     meja.buatKamar(k, cfg, nm, sesi.room === k ? sesi.token : '');
   };
 
-  const gabung = kodeMeja => {
+  const gabung = () => {
     const nm = bacaNama(); if (!nm) return;
-    const k = (kodeMeja != null ? kodeMeja : joinKode).trim().toUpperCase();
+    const k = joinKode.trim().toUpperCase();
     if (!k) { tandai('join'); refJoin.current.focus(); return; }
     lepas('join');
     const sesi = bacaSesi();
@@ -108,12 +99,6 @@ export default function Home({ aktif, meja }) {
           </div>
         </header>
 
-        {MODE_LOKAL && import.meta.env.VITE_TARGET === 'pages' && (
-          <p className="catatan-lokal">
-            Mode lokal: server belum dihubungkan, jadi permainan hanya berjalan di perangkat ini.
-            Main melawan BOT tetap bisa; untuk main bersama teman, admin perlu mengisi URL server Apps Script.
-          </p>
-        )}
 
         {resume && (
           <div className="resume">
@@ -173,8 +158,12 @@ export default function Home({ aktif, meja }) {
                        onChange={e => setJoinKode(e.target.value)} onKeyDown={e => { if (e.key === 'Enter') gabung(); }} />
                 <button className="btn btn-kedua" disabled={sibuk} onClick={() => gabung()}>Gabung</button>
               </div>
-              <div className="daftar-judul">Meja yang sedang buka <span>{daftar && daftar.length ? daftar.length + ' meja' : ''}</span></div>
-              <DaftarMeja daftar={daftar} sibuk={sibuk} onGabung={k => { setJoinKode(k); gabung(k); }} />
+              <div className="daftar-judul">Cara main bersama</div>
+              <div className="kosong-state">
+                <span className="ubin">🀄</span>
+                Host membuat meja lalu membagikan kode atau tautannya. Meja berjalan langsung di browser host,
+                jadi host perlu tetap membuka halaman meja selama permainan.
+              </div>
             </div>
           </section>
         </div>
@@ -183,38 +172,3 @@ export default function Home({ aktif, meja }) {
   );
 }
 
-function DaftarMeja({ daftar, sibuk, onGabung }) {
-  if (!daftar) return <div className="room-list"><div className="kosong-state">Memuat daftar meja...</div></div>;
-  if (!daftar.length) {
-    return (
-      <div className="room-list">
-        <div className="kosong-state">
-          <span className="ubin">🀄</span>
-          Belum ada meja yang buka. Buat meja di sebelah kiri, lalu bagikan kodenya ke teman.
-        </div>
-      </div>
-    );
-  }
-  return (
-    <div className="room-list">
-      {daftar.map(r => (
-        <div key={r.kode} className={'room-item' + (r.kosong ? ' bisa' : '')} onClick={r.kosong && !sibuk ? () => onGabung(r.kode) : undefined}>
-          <div>
-            <div className="kode">{r.kode}</div>
-            <div className="ket">
-              {r.status === 'lobby' ? <>
-                <span className="st-on">{r.kosong ? `Menunggu ${r.kosong} pemain` : 'Siap dimulai'}</span>, host {r.host}
-                {r.menunggu && r.menunggu.length > 0 && <div>Kursi dipesan untuk {r.menunggu.join(', ')}</div>}
-              </> : <>
-                <span className="st-main">Sedang main, ronde {r.ronde}</span>, host {r.host}
-                {r.kosong > 0 && <div>{r.kosong} kursi ditinggal, bisa diambil alih</div>}
-              </>}
-            </div>
-          </div>
-          <button className={r.kosong ? 'btn btn-kedua' : 'btn btn-teks'} disabled={!r.kosong || sibuk}
-                  onClick={e => { e.stopPropagation(); onGabung(r.kode); }}>{r.kosong ? 'Gabung' : 'Penuh'}</button>
-        </div>
-      ))}
-    </div>
-  );
-}

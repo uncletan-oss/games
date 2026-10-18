@@ -216,8 +216,6 @@ button:disabled { background: #7f8c8d !important; cursor: not-allowed; animation
 #nama-pemain { width: 260px; font-weight: 600; }
 .in.wajib, .plakat input.wajib { border-color: var(--danger) !important; box-shadow: 0 0 0 3px rgba(179,38,30,.25); }
 
-.catatan-lokal { margin: 0; padding: 9px 14px; border-radius: 10px; font-size: 13px; line-height: 1.5;
-                 color: var(--muted); background: var(--panel-2); border: 1px dashed var(--line); }
 .resume { display: flex; align-items: center; gap: 14px; padding: 10px 14px; border-radius: 10px;
           background: rgba(201,162,74,.12); border: 1px solid rgba(201,162,74,.5); }
 .resume p { margin: 0; flex: 1; font-size: 14px; }
@@ -330,6 +328,9 @@ button:disabled { background: #7f8c8d !important; cursor: not-allowed; animation
 .table-tools .tt-keluar { background: rgba(179,38,30,.85); }
 
 .sb-tutup { display: none; }
+.banner-putus { position: absolute; z-index: 80; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                padding: 10px 16px; border-radius: 10px; background: var(--danger); color: #fff; font-size: 13px; font-weight: 700;
+                box-shadow: 0 10px 30px rgba(0,0,0,.5); }
 
 /* Badge nama di meja permainan */
 .badge { display: inline-block; font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 9px; vertical-align: middle; margin-left: 4px; }

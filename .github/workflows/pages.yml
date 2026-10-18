@@ -1,8 +1,8 @@
 name: GitHub Pages
 
-# Build client Mahjong untuk GitHub Pages. Deploy hanya dari branch default.
-# Isi repository variable GAS_URL (Settings → Secrets and variables → Actions → Variables)
-# dengan URL Web App Apps Script (.../exec). Tanpa GAS_URL, situs berjalan dalam mode lokal.
+# Build game Mahjong (React, peer-to-peer) dan deploy ke GitHub Pages dari branch default.
+# Opsional: variabel VITE_PEER_HOST/PORT/PATH (Settings → Secrets and variables → Actions → Variables)
+# untuk memakai server signaling PeerJS sendiri; kosong = server publik PeerJS.
 on:
   push:
     paths:
@@ -32,14 +32,16 @@ jobs:
       - name: Build
         working-directory: mahjong
         env:
-          VITE_GAS_URL: ${{ vars.GAS_URL }}
+          VITE_PEER_HOST: ${{ vars.VITE_PEER_HOST }}
+          VITE_PEER_PORT: ${{ vars.VITE_PEER_PORT }}
+          VITE_PEER_PATH: ${{ vars.VITE_PEER_PATH }}
         run: |
           npm ci
-          npm run build:pages
+          npm run build
       - name: Susun situs
         run: |
-          mkdir -p _site/mahjong
-          cp mahjong/dist-pages/index.html _site/mahjong/index.html
+          mkdir -p _site
+          cp -r mahjong/dist _site/mahjong
           # Halaman utama repo langsung mengarah ke game Mahjong
           printf '<!DOCTYPE html><meta charset="utf-8"><title>Games</title><meta http-equiv="refresh" content="0; url=mahjong/"><a href="mahjong/">Meja Mahjong</a>\n' > _site/index.html
       - uses: actions/upload-pages-artifact@v3

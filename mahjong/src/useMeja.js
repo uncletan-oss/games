@@ -1,8 +1,8 @@
 import { createElement, useCallback, useEffect, useRef, useState } from 'react';
-import { panggil, pesanError } from './api.js';
+import { panggil, pesanError, lepasMeja } from './api.js';
 import { simpanSesi, hapusSesi } from './sesi.js';
 import {
-  POLL_MS, BOT_DELAY_MS, BOT_MACET_MS, PESAN_ERROR,
+  POLL_MS, BOT_DELAY_MS, BOT_MACET_MS, PUTUS_MAKS_MS, PESAN_ERROR,
   samaIsi, gabungUrutan, bisaBuang, konteksHint
 } from './konstanta.js';
 import PanelMenang from './components/PanelMenang.jsx';
@@ -32,6 +32,7 @@ export default function useMeja() {
   const [hintMemuat, setHintMemuat] = useState(false);
   const [sibuk, setSibuk] = useState(false);                   // tombol layar awal/ruang tunggu
   const [modal, setModal] = useState(null);
+  const [putus, setPutus] = useState(false);                   // tamu: sedang menyambung ulang ke host
 
   // Nilai yang tidak perlu memicu render
   const r = useRef({
@@ -40,8 +41,8 @@ export default function useMeja() {
     // supaya tidak "menghidupkan" kembali meja yang sudah ditinggalkan.
     gen: 0,
     lastVersion: -1, versiSejak: Date.now(),
-    pollTimer: null, pollInFlight: false, botThinking: false, tickInFlight: false,
-    klaimDeadline: 0, giliranDeadline: 0, gameOverShown: false
+    pollTimer: null, pollInFlight: false, pollLagi: false, botThinking: false, tickInFlight: false,
+    klaimDeadline: 0, giliranDeadline: 0, gameOverShown: false, putusSejak: 0
   }).current;
 
   /** Panggil server; hasil diabaikan bila pemain sudah keluar meja di tengah jalan. */
@@ -59,14 +60,16 @@ export default function useMeja() {
   const tutupModal = useCallback(() => setModal(null), []);
 
   /* ---------------- Navigasi ---------------- */
-  const keHome = () => {
+  const keHome = (lepas = true) => {
     r.gen++;
+    if (lepas) lepasMeja();
     if (r.pollTimer) clearInterval(r.pollTimer);
     Object.assign(r, {
       pollTimer: null, room: '', token: '', lastVersion: -1,
       pollInFlight: false, botThinking: false, tickInFlight: false,
-      gameOverShown: false, klaimDeadline: 0, giliranDeadline: 0
+      gameOverShown: false, klaimDeadline: 0, giliranDeadline: 0, pollLagi: false, putusSejak: 0
     });
+    setPutus(false);
     setView(null); setHand([]); setSelected(-1); setPending(0); setHint(null); setHintMemuat(false);
     setModal(null);
     hapusSesi();
@@ -80,7 +83,7 @@ export default function useMeja() {
       return tampilModal('Kursi sudah dipesan', `Kursi kosong di meja ini dipesan untuk ${nama}. Gabung dengan nama yang sama, atau minta host mengubah pesanannya.`);
     }
     const kode = Object.keys(PESAN_ERROR).find(k => m.includes(k));
-    if ((kode === 'BUKAN_PEMAIN' || kode === 'KAMAR_TIDAK_ADA') && r.room) keHome();
+    if (['BUKAN_PEMAIN', 'KAMAR_TIDAK_ADA', 'MEJA_DITUTUP', 'HOST_PUTUS'].includes(kode) && r.room) keHome();
     tampilModal('Tidak bisa dilanjutkan', kode ? PESAN_ERROR[kode] : m);
   };
 
@@ -148,14 +151,25 @@ export default function useMeja() {
   };
 
   const poll = () => {
-    if (!r.room || r.pollInFlight || pendingRef.current > 0 || document.hidden) return;
+    if (!r.room || pendingRef.current > 0 || document.hidden) return;
+    if (r.pollInFlight) { r.pollLagi = true; return; }   // ada perubahan saat menunggu: ambil lagi setelahnya
     r.pollInFlight = true;
+    r.pollLagi = false;
+    const selesai = () => { r.pollInFlight = false; if (r.pollLagi) poll(); };
     panggilSesi('getStatusMeja', r.room, r.token).then(
-      s => { r.pollInFlight = false; if (s) terapkanState(s, true); },
+      s => {
+        if (r.putusSejak) { r.putusSejak = 0; setPutus(false); }
+        if (s) terapkanState(s, true);
+        selesai();
+      },
       err => {
-        r.pollInFlight = false;
         const m = pesanError(err);
-        if (m.includes('BUKAN_PEMAIN') || m.includes('KAMAR_TIDAK_ADA')) tampilError(err);
+        if (m.includes('HOST_PUTUS')) {
+          // Host mungkin hanya me-refresh halaman: coba terus sampai batas waktu
+          if (!r.putusSejak) { r.putusSejak = Date.now(); setPutus(true); }
+          else if (Date.now() - r.putusSejak > PUTUS_MAKS_MS) return tampilError(err);
+        } else if (['BUKAN_PEMAIN', 'KAMAR_TIDAK_ADA', 'MEJA_DITUTUP'].some(k => m.includes(k))) return tampilError(err);
+        selesai();
       });
   };
 
@@ -186,8 +200,14 @@ export default function useMeja() {
   useEffect(() => {
     const id = setInterval(() => fnRef.current.tick(), 250);
     const onVis = () => { if (!document.hidden) fnRef.current.poll(); };
+    const onBerubah = () => fnRef.current.poll();   // dikirim lapisan jaringan saat state meja berubah
     document.addEventListener('visibilitychange', onVis);
-    return () => { clearInterval(id); document.removeEventListener('visibilitychange', onVis); };
+    window.addEventListener('meja-berubah', onBerubah);
+    return () => {
+      clearInterval(id);
+      document.removeEventListener('visibilitychange', onVis);
+      window.removeEventListener('meja-berubah', onBerubah);
+    };
   }, []);
 
   const masukKamar = (res, nama) => {
@@ -224,7 +244,7 @@ export default function useMeja() {
 
   const keluarKamarSaya = () => {
     const room = r.room, tok = r.token;
-    keHome();
+    keHome(false);   // koneksi diputus oleh keluarKamar setelah pesan keluar terkirim
     if (room && tok) panggil('keluarKamar', room, tok).catch(() => {});
   };
 
@@ -234,17 +254,18 @@ export default function useMeja() {
     const s = viewRef.current;
     if (s && s.isHost) {
       tampilModal('Keluar dari meja?', lainManusia(s)
-        ? 'Peran host akan dipindah ke pemain lain di ruang tunggu.'
+        ? 'Meja berjalan di perangkat Anda sebagai host, jadi meja akan ditutup untuk semua pemain.'
         : 'Anda satu-satunya pemain, jadi meja ini akan ditutup.', { label: 'Keluar', onClick: keluarKamarSaya });
     } else keluarKamarSaya();
   };
 
   const keluarPermainan = () => {
     const s = viewRef.current; if (!s) return;
-    const pesan = lainManusia(s)
-      ? 'Kursi Anda dilanjutkan BOT supaya permainan tidak berhenti. Anda atau orang lain bisa mengambil alih kursi itu lewat Gabung.'
-        + (s.isHost ? '\nPeran host dipindah ke pemain lain.' : '')
-      : 'Tidak ada pemain lain di meja ini, jadi meja akan ditutup.';
+    const pesan = s.isHost
+      ? (lainManusia(s)
+        ? 'Meja berjalan di perangkat Anda sebagai host. Jika Anda keluar, meja ditutup untuk semua pemain.'
+        : 'Meja ini akan ditutup.')
+      : 'Kursi Anda dilanjutkan BOT supaya permainan tidak berhenti. Anda atau orang lain bisa mengambil alih kursi itu lewat Gabung.';
     tampilModal('Keluar dari permainan?', pesan, { label: 'Keluar', onClick: keluarKamarSaya });
   };
 
@@ -337,7 +358,7 @@ export default function useMeja() {
   const tutupHint = () => setHint(null);
 
   return {
-    layar, view, hand, selected, pending, hint, hintMemuat, sibuk, modal,
+    layar, view, hand, selected, pending, hint, hintMemuat, sibuk, modal, putus,
     deadline: { klaim: () => r.klaimDeadline, giliran: () => r.giliranDeadline },
     tampilModal, tutupModal,
     buatKamar, gabungKamar, keluarLobby, keluarPermainan,

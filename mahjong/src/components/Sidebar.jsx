@@ -43,7 +43,8 @@ function TabMain() {
       <li><b>Batas waktu giliran 60 detik.</b> Jika lewat, sistem membuang ubin terakhir yang Anda ambil secara otomatis supaya permainan tidak macet.</li>
       <li><b>Dealer</b> 🎲 bergiliran setiap ronde. Badge 🏆 = jumlah kemenangan di kamar ini.</li>
       <li>Tutup/refresh halaman? Buka lagi aplikasinya dan tekan <b>Kembali ke meja</b> — kursi Anda tetap aman.</li>
-      <li><b>🚪 Keluar</b> di tengah permainan: kursi Anda dilanjutkan BOT supaya meja tidak macet. Orang lain (atau Anda lagi) bisa mengambil alih kursi itu lewat <b>Gabung</b>. Jika host keluar, peran host pindah ke pemain lain.</li>
+      <li><b>🚪 Keluar</b> di tengah permainan: kursi Anda dilanjutkan BOT supaya meja tidak macet. Orang lain (atau Anda lagi) bisa mengambil alih kursi itu lewat <b>Gabung</b>.</li>
+      <li><b>Host</b> menjalankan meja di browsernya sendiri (peer-to-peer). Jika host menutup halaman, pemain lain menunggu host kembali (maks. 30 detik); jika host menekan Keluar, meja ditutup.</li>
     </ul>
   );
 }

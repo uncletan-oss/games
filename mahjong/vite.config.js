@@ -1,13 +1,9 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import { viteSingleFile } from 'vite-plugin-singlefile';
 
-// Apps Script hanya bisa menyajikan file HTML, jadi seluruh JS & CSS di-inline ke satu file.
+// base relatif supaya bisa dibuka di sub-folder GitHub Pages (/games/mahjong/)
 export default defineConfig({
-  plugins: [react(), viteSingleFile()],
-  build: {
-    outDir: 'dist',
-    emptyOutDir: true,
-    target: 'es2019'
-  }
+  base: './',
+  plugins: [react()],
+  build: { target: 'es2019' }
 });

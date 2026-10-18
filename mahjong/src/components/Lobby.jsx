@@ -16,16 +16,19 @@ function InputPesan({ kursi, awal, disabled, onSimpan }) {
 
 /** Layar 2: ruang tunggu. */
 export default function Lobby({ s, meja }) {
-  const [salin, setSalin] = useState('Salin kode');
+  const [labelKode, setLabelKode] = useState('Salin kode');
+  const [labelTautan, setLabelTautan] = useState('Salin tautan undangan');
   const { pending, tampilModal, aturKursi } = meja;
   const terkunci = pending > 0;
 
-  const salinKode = () => {
-    const tandai = t => { setSalin(t); setTimeout(() => setSalin('Salin kode'), 1600); };
+  // Salin ke clipboard; tombol menampilkan hasilnya sebentar
+  const salin = (teks, label, setLabel) => {
+    const tandai = t => { setLabel(t); setTimeout(() => setLabel(label), 1600); };
     try {
-      navigator.clipboard.writeText(s.roomCode).then(() => tandai('Kode disalin'), () => tandai('Salin manual: ' + s.roomCode));
-    } catch (e) { tandai('Salin manual: ' + s.roomCode); }
+      navigator.clipboard.writeText(teks).then(() => tandai('Disalin'), () => tandai('Salin manual: ' + teks));
+    } catch (e) { tandai('Salin manual: ' + teks); }
   };
+  const tautan = location.origin + location.pathname + '?meja=' + encodeURIComponent(s.roomCode);
 
   const tunggu = s.seats.filter(x => !x.terisi);
 
@@ -33,13 +36,14 @@ export default function Lobby({ s, meja }) {
     <div className="screen">
       <div className="lobby">
         <header className="home-head">
-          <h1 className="brand">Ruang tunggu<small>{s.isHost ? 'Bagikan kode meja ke teman Anda, lalu mulai saat semua kursi terisi.' : 'Menunggu host memulai permainan.'}</small></h1>
+          <h1 className="brand">Ruang tunggu<small>{s.isHost ? 'Bagikan kode atau tautan meja ke teman Anda. Biarkan halaman ini tetap terbuka: meja berjalan di perangkat Anda.' : 'Menunggu host memulai permainan.'}</small></h1>
         </header>
         <div className="meja">
           <div className="felt">
             <span className="lbl">Kode meja</span>
             <span className="kode-besar">{s.roomCode}</span>
-            <button className="mini" type="button" onClick={salinKode}>{salin}</button>
+            <button className="mini" type="button" onClick={() => salin(s.roomCode, 'Salin kode', setLabelKode)}>{labelKode}</button>
+            <button className="mini" type="button" onClick={() => salin(tautan, 'Salin tautan undangan', setLabelTautan)}>{labelTautan}</button>
           </div>
           {s.seats.map((seat, i) => {
             const rel = (i - s.me + 4) % 4;

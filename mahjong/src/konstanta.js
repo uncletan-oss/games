@@ -6,10 +6,14 @@ export const LEVEL = [['easy', 'Easy'], ['medium', 'Medium'], ['hard', 'Hard']];
 export const POLL_MS = 1500;
 export const BOT_DELAY_MS = 1200;
 export const BOT_MACET_MS = 6000;   // jika host tidak menjalankan bot, pemain lain mengambil alih
+export const PUTUS_MAKS_MS = 30000; // koneksi ke host boleh putus selama ini (mis. host me-refresh) sebelum dianggap hilang
 export const NAMA_AKSI = { ron: 'Ron (menang)', pong: 'Pong', chow: 'Chow', kong: 'Kong', pass: 'Lewati' };
 
 export const PESAN_ERROR = {
-  KAMAR_TIDAK_ADA: 'Meja dengan kode itu tidak ditemukan. Periksa lagi kodenya, atau minta host membuat meja dulu.',
+  KAMAR_TIDAK_ADA: 'Meja dengan kode itu tidak ditemukan. Periksa lagi kodenya, dan pastikan host masih membuka halaman meja.',
+  MEJA_DITUTUP: 'Host menutup meja ini.',
+  HOST_PUTUS: 'Koneksi ke host terputus. Mungkin host menutup halaman atau internetnya bermasalah.',
+  JARINGAN_GAGAL: 'Tidak bisa terhubung ke jaringan peer-to-peer. Periksa koneksi internet Anda lalu coba lagi.',
   KAMAR_PENUH: 'Semua kursi di meja ini sudah terisi.',
   KAMAR_SUDAH_MAIN: 'Meja ini sedang bermain dan tidak ada kursi kosong. Buat meja sendiri, atau tunggu ada pemain yang keluar.',
   BUKAN_PEMAIN: 'Anda tidak lagi duduk di meja ini. Mungkin host mengganti kursi Anda, Anda sudah keluar, atau meja dibuat ulang.',

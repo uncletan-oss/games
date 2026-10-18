@@ -1,24 +1,21 @@
 {
-  "name": "mahjong-gas-react",
+  "name": "mahjong-react-p2p",
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "Mahjong 4 pemain + BOT AI. Client React, server Google Apps Script.",
+  "description": "Mahjong 4 pemain + BOT AI. React, peer-to-peer (WebRTC), di-host di GitHub Pages.",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node scripts/salin-ke-gas.mjs",
-    "build:pages": "vite build --mode pages --outDir dist-pages",
-    "preview": "vite preview",
-    "push": "npm run build && clasp push",
-    "deploy": "npm run push && clasp deploy"
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
+    "peerjs": "^1.5.5",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^5.1.0",
-    "vite": "^7.2.0",
-    "vite-plugin-singlefile": "^2.3.0"
+    "vite": "^7.2.0"
   }
 }
